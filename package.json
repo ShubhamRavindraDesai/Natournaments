@@ -1,7 +1,7 @@
 {
-  "name": "natours",
+  "name": "tenniscricketapi",
   "version": "1.0.0",
-  "description": "learning node js express and mongoDB",
+  "description": "tennis cricket api",
   "main": "index.js",
   "dependencies": {
     "app": "^0.1.0",
@@ -42,12 +42,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jonasschmedtmann/complete-node-bootcamp.git"
+    "url": "git+https://gitlab.com/arvindkalbhor/tennis-cricket-api.git"
   },
   "author": "Shubham desai",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jonasschmedtmann/complete-node-bootcamp/issues"
+    "url": "https://gitlab.com/arvindkalbhor/tennis-cricket-api.git"
   },
-  "homepage": "https://github.com/jonasschmedtmann/complete-node-bootcamp#readme"
+  "homepage": "https://gitlab.com/arvindkalbhor/tennis-cricket-api.git"
 }

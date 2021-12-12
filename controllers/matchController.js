@@ -45,7 +45,7 @@ exports.updateMatch = async (req, res) => {
   res.status(200).json({
     status: 'success',
     data: {
-      match: "updated tour here.."
+      match
     }
   });
 } catch (err) {
