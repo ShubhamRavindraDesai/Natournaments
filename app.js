@@ -26,6 +26,6 @@ app.use((req, res, next) => {
 // 3) Routes
 
 app.use('/api/v1/matches', matchRouter);
-app.use('/api/v1/matches', userRouter);
+app.use('/api/v1/users', userRouter);
 
 module.exports = app;

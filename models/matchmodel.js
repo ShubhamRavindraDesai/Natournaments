@@ -7,7 +7,9 @@ const matchSchema = new mongoose.Schema({
     unique: true,
     trim: true
   }, 
-  description: String,
+  description: {
+    type: String
+  },
   tStartDate:{
     type: Date,
     default: Date.now()
@@ -15,17 +17,23 @@ const matchSchema = new mongoose.Schema({
   tEndDate:{
     type: Date
   },
-  tBanner: String,
+  tLocation: {
+    type: String,
+    required: [true, 'a tournament must have a location']
+  },
+  tBanner: {
+    type: String
+  },
   tPrizes: [{
     prizeNumber: Number,
     prizeMoney: Number,
     sponsor: String,
   }],
   tContacts: [
-  {
+    {
       name: String,
       mob: Number
-  }
+    }
   ],
   payment:{},
   matchesWinners: [

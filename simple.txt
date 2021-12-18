@@ -1,0 +1,34 @@
+{
+  "tName": "this is new tournament", 
+  "description": "this is description",
+  "tStartDate": "25/11/2021",
+  "tEndDate": "18/12/2021",
+  "tPrizes": [{
+    "prizeNumber": 1,
+    "prizeMoney": 15000,
+    "sponsor": "arvind kalbhor",
+  }],
+  "tContacts": [
+  {
+      "name": "shubham desai",
+      "mob": 8830926628
+  }
+  ],
+   "matchesWinners": [
+    {
+      "tWinners":[
+              {
+                "winnerNumber": 1,
+                "cityName": "Kashil"
+              },
+            ],
+      "halfWinner":[ 
+              {
+                "day": 1,
+                "date": 27/11/2021,
+                "cityName": "Kashil"
+              }
+           ]
+    }
+  ]
+}

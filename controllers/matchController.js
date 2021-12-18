@@ -2,7 +2,8 @@ const Match = require('./../models/matchmodel')
 
 exports.getAllMatches = async (req, res) => {
 try {
-  const matches = await Match.find();
+  console.log(req.query)
+  const matches = await Match.find(req.query);
   res.status(200).json({
     status: 'success',
     result: matches.length,
