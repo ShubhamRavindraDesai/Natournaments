@@ -1,4 +1,5 @@
 const Match = require('./../models/matchmodel')
+const multer = require('multer');
 
 exports.getAllMatches = async (req, res) => {
 try {
@@ -74,6 +75,9 @@ exports.deleteMatch = async (req, res) => {
 
 exports.createMatch = async (req, res) => {
 try {
+  console.log(req.file)
+  console.log(req.body)
+  
   const newMatch = await Match.create(req.body)
 
   res.status(201).json({

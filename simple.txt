@@ -32,3 +32,49 @@
     }
   ]
 }
+
+/////////
+{
+  "tName": "satara tournament", 
+  "description": "satara description",
+  "tStartDate": "26/11/2021",
+  "tEndDate": "17/12/2021",
+  "tLocation": "Satara",
+  "tPrizes": [{
+    "prizeNumber": 1,
+    "prizeMoney": 10000,
+    "sponsor": "Shubham Desai"
+  },
+  {
+    "prizeNumber": 2,
+    "prizeMoney": 7000,
+    "sponsor": "ashok "
+  }],
+  "tContacts": [
+  {
+      "name": "Arvind Kalbhor",
+      "mob": 9312683525
+        },
+        {
+      "name": "Ganesh",
+      "mob": 9665609999
+        }
+  ],
+   "matchesWinners": [
+    {
+      "tWinners":[
+              {
+                "winnerNumber": 1,
+                "cityName": "satara"
+              }
+            ],
+      "halfWinner":[ 
+              {
+                "day": 1,
+                "date": "28/11/2021",
+                "cityName": "satara"
+              }
+           ]
+    }
+  ]
+}

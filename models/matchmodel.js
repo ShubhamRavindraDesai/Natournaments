@@ -6,7 +6,7 @@ const matchSchema = new mongoose.Schema({
     required: [true, 'a match must have a name'],
     unique: true,
     trim: true
-  }, 
+  },
   description: {
     type: String
   },

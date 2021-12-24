@@ -1,14 +1,15 @@
 const express = require('express')
 const matchController = require('./../controllers/matchController')
 const router = express.Router();
+const multer = require('multer')
 
-// router
-  // .param('id', tourController.checkID)
+const upload = multer({dest: 'public/images'})
 
 router
   .route('/')
     .get(matchController.getAllMatches)
-    .post(matchController.createMatch)
+    .post(upload.single('image'), matchController.createMatch)
+
 
 router
   .route('/:id')
