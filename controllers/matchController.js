@@ -1,5 +1,32 @@
 const Match = require('./../models/matchmodel')
-const multer = require('multer');
+const multer = require('multer')
+
+const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/images')
+  },
+  filename: (req, file, cb) => {
+    const ext = file.mimetype.split('/')[1]
+    const filename = file.originalname
+    cb(null,`${filename}`)
+  }
+})
+
+const multerFilter = (req, file, cb) => {
+  if(file.mimetype.startsWith('image')) {
+    cb(null, true)
+  } else {
+    cb(err, false)
+  }
+}
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter
+})
+
+
+exports.uploadMatchImage = upload.single('image')
 
 exports.getAllMatches = async (req, res) => {
 try {
@@ -75,9 +102,6 @@ exports.deleteMatch = async (req, res) => {
 
 exports.createMatch = async (req, res) => {
 try {
-  console.log(req.file)
-  console.log(req.body)
-  
   const newMatch = await Match.create(req.body)
 
   res.status(201).json({

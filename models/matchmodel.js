@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const matchSchema = new mongoose.Schema({
   tName:{
     type: String,
-    required: [true, 'a match must have a name'],
+    required: [false, 'a match must have a name'],
     unique: true,
     trim: true
   },
@@ -19,9 +19,9 @@ const matchSchema = new mongoose.Schema({
   },
   tLocation: {
     type: String,
-    required: [true, 'a tournament must have a location']
+    required: [false, 'a tournament must have a location']
   },
-  tBanner: {
+  image: {
     type: String
   },
   tPrizes: [{
