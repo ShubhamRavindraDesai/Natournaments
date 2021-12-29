@@ -1,5 +1,6 @@
 const Match = require('./../models/matchmodel')
 const catchAsync = require('./../utils/catchAsync')
+const AppError = require('../utils/appError')
 const multer = require('multer')
 
 const multerStorage = multer.diskStorage({
@@ -43,6 +44,10 @@ exports.getAllMatches = catchAsync(async (req, res, next) => {
 
 exports.getMatch = catchAsync(async (req, res, next) => {
   const match = await Match.findById(req.params.id) ;
+
+  if(!match) {
+    return next(new AppError('No tournament found with that id', 404))
+  }
   res.status(200).json({
     status: 'success',
     
@@ -56,6 +61,10 @@ exports.updateMatch = catchAsync(async (req, res, next) => {
     const match = await Match.findByIdAndUpdate(req.params.id, req.body, {
       new: true
     })
+
+    if(!match) {
+      return next(new AppError('No tournament found with that id', 404))
+    }
   res.status(200).json({
     status: 'success',
     data: {
@@ -64,7 +73,10 @@ exports.updateMatch = catchAsync(async (req, res, next) => {
   });
 })
 exports.deleteMatch = catchAsync(async (req, res, next) => {
-    await Match.findByIdAndDelete(req.params.id)
+    const match = await Match.findByIdAndDelete(req.params.id)
+    if(!match) {
+      return next(new AppError('No tournament found with that id', 404))
+    }
   res.status(204).json({
     status: 'success',
     data: null
@@ -72,11 +84,15 @@ exports.deleteMatch = catchAsync(async (req, res, next) => {
 })
 
 exports.createMatch = catchAsync(async (req, res, next) => {
-  console.log(req.file)
-  console.log(req.body)
-  const bodyObj = req.body
-  bodyObj.image = req.file.filename
-  const newMatch = await Match.create(bodyObj)
+  // console.log(req.file)
+  // console.log(req.body)
+  // const bodyObj = req.body
+  // req.body.image = req.file.filename
+  const newMatch = await Match.create(req.body)
+
+  if(!newMatch) {
+    return next(new AppError('No tournament found with that id', 404))
+  }
 
   res.status(201).json({
       status: 'success',

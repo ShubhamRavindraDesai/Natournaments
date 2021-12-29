@@ -36,23 +36,39 @@
 /////////
 {
   "tName": "satara tournament", 
-  "description": "satara description",
   "tStartDate": "26/11/2021",
   "tEndDate": "17/12/2021",
   "tLocation": "Satara",
-  "image",
   "tPrizes": [{
     "prizeNumber": 1,
-    "prizeMoney": 10000,
+    "prizeMoney": 50001,
     "sponsor": "Shubham Desai"
   },
   {
     "prizeNumber": 2,
-    "prizeMoney": 7000,
+    "prizeMoney": 30001,
+    "sponsor": "ashok "
+  },
+    {
+    "prizeNumber": 3,
+    "prizeMoney": 11001,
+    "sponsor": "ashok "
+  },
+    {
+    "prizeNumber": 4,
+    "prizeMoney": 10001,
     "sponsor": "ashok "
   }],
   "tContacts": [
   {
+      "name": "Arvind Kalbhor",
+      "mob": 9312683525
+        },
+        {
+      "name": "Ganesh",
+      "mob": 9665609999
+        },
+        {
       "name": "Arvind Kalbhor",
       "mob": 9312683525
         },
