@@ -1,4 +1,5 @@
 const Match = require('./../models/matchmodel')
+const catchAsync = require('./../utils/catchAsync')
 const multer = require('multer')
 
 const multerStorage = multer.diskStorage({
@@ -28,8 +29,7 @@ const upload = multer({
 
 exports.uploadMatchImage = upload.single('image')
 
-exports.getAllMatches = async (req, res) => {
-try {
+exports.getAllMatches = catchAsync(async (req, res, next) => {
   console.log(req.query)
   const matches = await Match.find(req.query);
   res.status(200).json({
@@ -39,16 +39,9 @@ try {
       matches
     }
   });
-} catch(err){
-  res.status(404).json({
-    status: 'failed',
-    message: err
-  })
-}
-};
+});
 
-exports.getMatch = async (req, res) => {
-  try{
+exports.getMatch = catchAsync(async (req, res, next) => {
   const match = await Match.findById(req.params.id) ;
   res.status(200).json({
     status: 'success',
@@ -56,18 +49,10 @@ exports.getMatch = async (req, res) => {
     data: {
       match
     }
-  });
-  } catch (err) {
-    res.status(404).json({
-      status: 'failed',
-      message: err
-    })
+  })
+})
 
-  }
-}
-
-exports.updateMatch = async (req, res) => {
-  try{
+exports.updateMatch = catchAsync(async (req, res, next) => {
     const match = await Match.findByIdAndUpdate(req.params.id, req.body, {
       new: true
     })
@@ -77,32 +62,21 @@ exports.updateMatch = async (req, res) => {
       match
     }
   });
-} catch (err) {
-    res.status(404).json({
-      status: 'failed',
-      message: err
-    })
-
-  }
-}
-exports.deleteMatch = async (req, res) => {
-  try {
+})
+exports.deleteMatch = catchAsync(async (req, res, next) => {
     await Match.findByIdAndDelete(req.params.id)
   res.status(204).json({
     status: 'success',
     data: null
-  });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err
-    })
-  }
-}
+  })
+})
 
-exports.createMatch = async (req, res) => {
-try {
-  const newMatch = await Match.create(req.body)
+exports.createMatch = catchAsync(async (req, res, next) => {
+  console.log(req.file)
+  console.log(req.body)
+  const bodyObj = req.body
+  bodyObj.image = req.file.filename
+  const newMatch = await Match.create(bodyObj)
 
   res.status(201).json({
       status: 'success',
@@ -110,10 +84,4 @@ try {
         match: newMatch
       }
     })
-} catch (err) {
-  res.status(400).json({
-    status: 'fail',
-    message: err
-  })
-}
-}
+})

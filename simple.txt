@@ -40,6 +40,7 @@
   "tStartDate": "26/11/2021",
   "tEndDate": "17/12/2021",
   "tLocation": "Satara",
+  "image",
   "tPrizes": [{
     "prizeNumber": 1,
     "prizeMoney": 10000,
@@ -59,22 +60,5 @@
       "name": "Ganesh",
       "mob": 9665609999
         }
-  ],
-   "matchesWinners": [
-    {
-      "tWinners":[
-              {
-                "winnerNumber": 1,
-                "cityName": "satara"
-              }
-            ],
-      "halfWinner":[ 
-              {
-                "day": 1,
-                "date": "28/11/2021",
-                "cityName": "satara"
-              }
-           ]
-    }
   ]
 }

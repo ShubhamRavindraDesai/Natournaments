@@ -6,9 +6,7 @@ const router = express.Router();
 router
   .route('/')
     .get(matchController.getAllMatches)
-    .post( matchController.createMatch)
-
-router.post('/upload', matchController.uploadMatchImage)
+    .post(matchController.uploadMatchImage, matchController.createMatch)
 
 
 router
