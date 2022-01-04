@@ -7,7 +7,6 @@ const matchRouter = require('./routes/matchRoutes');
 const userRouter = require('./routes/userRoutes');
 
 const app = express();
-
 // 1) middlewares
 if ((process.env.NODE_ENV = 'development')) {
 	app.use(morgan('dev'));
@@ -25,15 +24,12 @@ app.use((req, res, next) => {
 	next();
 });
 
-// 3) Routes
+// 3) Routes 
 
 app.use('/api/v1/matches', matchRouter);
 app.use('/api/v1/users', userRouter);
 
 app.all('*', (req, res, next) => {
-	// const err = new Error(`can't find ${req.originalUrl} on this server!`)
-	// err.status = 'fail'
-	// err.statusCode = 404
 	next(new AppError(`can't find ${req.originalUrl} on this server!`, 404))
 })
 
