@@ -1,5 +1,6 @@
 const express = require('express');
-
+const dotenv = require('dotenv')
+dotenv.config({path:'./config.env'})
 const morgan = require('morgan');
 const AppError = require('./utils/appError')
 const globalErrorHandler = require('./controllers/errorController')
@@ -7,8 +8,12 @@ const matchRouter = require('./routes/matchRoutes');
 const userRouter = require('./routes/userRoutes');
 
 const app = express();
+
+console.log(process.env.NODE_ENV)
+
 // 1) middlewares
-if ((process.env.NODE_ENV = 'development')) {
+if (process.env.NODE_ENV === 'development') {
+	
 	app.use(morgan('dev'));
 }
 app.use(express.json());

@@ -36,8 +36,8 @@
 /////////
 {
   "tName": "satara tournament", 
-  "tStartDate": "26/11/2021",
-  "tEndDate": "17/12/2021",
+  "tStartDate": "2021/10/8",
+  "tEndDate": "2021/10/11",
   "tLocation": "Satara",
   "tPrizes": [{
     "prizeNumber": 1,

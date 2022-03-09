@@ -31,7 +31,7 @@ const upload = multer({
 exports.uploadMatchImage = upload.single('image')
 
 exports.getAllMatches = catchAsync(async (req, res, next) => {
-  console.log(req.query)
+  console.log(process.env)
   const matches = await Match.find(req.query);
   res.status(200).json({
     status: 'success',
