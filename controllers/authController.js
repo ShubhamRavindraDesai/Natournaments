@@ -13,6 +13,30 @@ const signToken = (id) => {
   });
 };
 
+const createSendToken = (user, statusCode, res) => {
+  const token = signToken(user.id);
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+
+  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+
+  res.cookie("jwt", token, cookieOptions);
+
+  user.password = undefined;
+
+  res.status(statusCode).json({
+    status: "sucess",
+    token,
+    data: {
+      user,
+    },
+  });
+};
+
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,
@@ -20,15 +44,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
   });
-
-  const token = signToken(newUser.id);
-  res.status(201).json({
-    status: "sucess",
-    token,
-    data: {
-      newUser,
-    },
-  });
+  createSendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -48,12 +64,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   // if everything is ok send token in resposne
-  const token = signToken(user._id);
-
-  res.status(200).json({
-    status: "success",
-    token,
-  });
+  createSendToken(user, 200, res);
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -133,15 +144,25 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
   )}/api/v1/users/resetpassword/${resetToken}`;
   const message = `Forget your password? Submit new PATCH request with new password and new passwordConfirm to:${resetURL}\n if you didn't forget your password, please ignore this email`;
 
-  await sendEMail({
-    email: user.email,
-    subject: "your password reset token(valid for 10 min",
-    message,
-  });
-  res.status(200).json({
-    status: "success",
-    message: "token send to your email",
-  });
+  try {
+    await sendEMail({
+      email: user.email,
+      subject: "your password reset token(valid for 10 min",
+      message,
+    });
+    res.status(200).json({
+      status: "success",
+      message: "token send to your email",
+    });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    return next(
+      new AppError("unable to send email, please try again later", 500)
+    );
+  }
 });
 
 exports.resetPassword = async (req, res, next) => {
@@ -150,13 +171,15 @@ exports.resetPassword = async (req, res, next) => {
     .update(req.params.token)
     .digest("hex");
 
+  const d = new Date();
+  const time = Date.now() + d.getTimezoneOffset();
   //if there is any user with the hashedtoken
   const user = await User.findOne({
     passwordResetToken: hashedToken,
-    passwordResetTokenExpired: { gt: Date.now() },
+    passwordResetExpires: { $gt: time },
   });
 
-  // check the token is valid or not expired change the password/ passwordResetToken and passwordResetTokenExpired chenge to undefined
+  // check the token is valid or not expired change the password / passwordResetToken and passwordResetTokenExpired chenge to undefined
   if (!user) {
     return next(
       new AppError("token is expired or invalid please try again", 400)
@@ -166,16 +189,22 @@ exports.resetPassword = async (req, res, next) => {
   user.password = req.body.password;
   user.confirmPassword = req.body.confirmPassword;
   user.passwordResetToken = undefined;
-  user.passwordResetTokenExpired = undefined;
-  user.passwordChangedAt = Date.now() - 1000;
+  user.passwordResetExpires = undefined;
+  user.passwordChangedAt = time - 1000;
   await user.save();
 
-  const token = signToken(user._id);
-
-  res.status(200).json({
-    status: "success",
-    token,
-  });
-
-  // set the passwordChangedAt property
+  createSendToken(user, 200, res);
 };
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select("+password");
+
+  if (!user.correctPassword(req.body.currentpassword, user.password)) {
+    return next(new (AppError("please enter the correct Password", 401))());
+  }
+
+  user.password = req.body.password;
+  user.confirmPassword = req.body.confirmPassword;
+  await user.save();
+  createSendToken(user, 200, res);
+});

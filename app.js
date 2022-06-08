@@ -1,25 +1,56 @@
 const express = require("express");
 const dotenv = require("dotenv");
-dotenv.config({ path: "./config.env" });
+
 const morgan = require("morgan");
+const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
+const hpp = require('hpp')
+
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 const matchRouter = require("./routes/matchRoutes");
 const userRouter = require("./routes/userRoutes");
 
+dotenv.config({ path: "./config.env" });
+
 const app = express();
 
 // 1) middlewares
+
+// security http headers middleware
+app.use(helmet());
+
+// data sanitation for noSQL query injection
+app.use(mongoSanitize());
+
+// data sanitation from xss
+app.use(xss());
+
+// prevent parameter polution
+// app.use(hpp())
+
+// logging development
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-app.use(express.json());
+
+// fixed server req limit for security
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "to many requests please try after 1 hour",
+});
+app.use("/api", limiter);
+
+// body parser reading data  in body into req.body
+app.use(express.json({ limit: "10kb" }));
+
+// serving static files
 app.use(express.static(`${__dirname}/public`));
 
-// app.use((req, res, next) => {
-// 	console.log('hello from the middleware....');
-// 	next();
-// });
+// test middleware
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();

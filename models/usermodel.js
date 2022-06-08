@@ -17,6 +17,13 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, "please provide valid email address"],
   },
   photo: String,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
   role: {
     type: String,
     enum: ["user", "admin", "lead"],
@@ -40,8 +47,6 @@ const userSchema = new mongoose.Schema({
       message: "password are not the same",
     },
   },
-  passwordResetToken: String,
-  passwordResetTokenExpired: Date,
 });
 
 userSchema.pre("save", async function (next) {
@@ -60,14 +65,17 @@ userSchema.methods.correctPassword = async function (
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
+userSchema.pre(/^find/, function (next) {
+  this.find({ active: { $ne: false } });
+  next();
+});
+
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(
       this.passwordChangedAt.getTime() / 1000,
       10
     );
-
-    console.log(changedTimestamp, JWTTimestamp);
     return JWTTimestamp < changedTimestamp;
   }
   return false;
@@ -81,9 +89,16 @@ userSchema.methods.createPasswordResetToken = function () {
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
-  this.passwordResetTokenExpired = Date.now() * 10 * 60 * 1000;
+  const d = new Date();
+  const t = -d.getTimezoneOffset() + 10; // Difference between your current time and UTC + 10min
 
-  console.log({ resetToken }, this.passwordResetToken);
+  this.passwordResetExpires = Date.now() + t * 60 * 1000;
+
+  console.log(
+    { resetToken },
+    this.passwordResetExpires,
+    this.passwordResetToken
+  );
   return resetToken;
 };
 

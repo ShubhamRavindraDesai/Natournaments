@@ -2,6 +2,7 @@ const Match = require("./../models/matchmodel");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("../utils/appError");
 const multer = require("multer");
+const factory = require("./factoryfunction");
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -70,16 +71,19 @@ exports.updateMatch = catchAsync(async (req, res, next) => {
     },
   });
 });
-exports.deleteMatch = catchAsync(async (req, res, next) => {
-  const match = await Match.findByIdAndDelete(req.params.id);
-  if (!match) {
-    return next(new AppError("No tournament found with that id", 404));
-  }
-  res.status(204).json({
-    status: "success",
-    data: null,
-  });
-});
+
+exports.deleteMatch = factory.deleteOne(Match);
+
+// exports.deleteMatch = catchAsync(async (req, res, next) => {
+//   const match = await Match.findByIdAndDelete(req.params.id);
+//   if (!match) {
+//     return next(new AppError("No tournament found with that id", 404));
+//   }
+//   res.status(204).json({
+//     status: "success",
+//     data: null,
+//   });
+// });
 
 exports.createMatch = catchAsync(async (req, res, next) => {
   // console.log(req.file)
