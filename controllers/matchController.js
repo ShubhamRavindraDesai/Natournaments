@@ -1,6 +1,6 @@
 const Match = require("./../models/matchmodel");
 const catchAsync = require("./../utils/catchAsync");
-const AppError = require("../utils/appError");
+const AppError = require("../utils/AppError");
 const multer = require("multer");
 const factory = require("./factoryfunction");
 

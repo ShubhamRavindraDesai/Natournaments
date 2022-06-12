@@ -1,15 +1,15 @@
-"use strict";
-const mongoose = require("mongoose");
+'use strict';
+const mongoose = require('mongoose');
 
-process.on("uncaughtException", (err) => {
+process.on('uncaughtException', (err) => {
   console.log(err);
-  console.log("UNCAUGHT EXCEPTION : Shutting Down");
+  console.log('UNCAUGHT EXCEPTION : Shutting Down');
   process.exit(1);
 });
 
-const app = require("./app");
+const app = require('./app');
 const DB = process.env.DATABASE.replace(
-  "<password>",
+  '<password>',
   process.env.DATABASE_PASSWORD
 );
 mongoose
@@ -21,7 +21,7 @@ mongoose
   })
   .then((con) => {
     // console.log(con.connections)
-    console.log("DB connection successful");
+    console.log('DB connection successful');
   });
 
 const port = process.env.PORT || 3000;
@@ -30,9 +30,9 @@ const server = app.listen(port, () => {
   console.log(`App is running on port ${port}....`);
 });
 
-process.on("unhandledRejection", (err) => {
+process.on('unhandledRejection', (err) => {
   console.log(err);
-  console.log("UNHANDLED REJECTION : Shutting Down");
+  console.log('UNHANDLED REJECTION : Shutting Down');
   server.close(() => {
     process.exit(1);
   });
