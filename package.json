@@ -1,5 +1,5 @@
 {
-  "name": "tenniscricketapi",
+  "name": "Natournaments",
   "version": "1.0.0",
   "description": "tennis cricket api",
   "main": "index.js",
@@ -36,18 +36,19 @@
   "scripts": {
     "start:dev": "NODE_ENV=development nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
-    "debug": "ndb server.js"
+    "debug": "ndb server.js",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git://gitlab.com/arvindkalbhor/tennis-cricket-api.git"
+    "url": "https://github.com/ShubhamRavindraDesai/Natournaments"
   },
   "author": "Shubham desai",
   "license": "ISC",
   "bugs": {
-    "url": "https://gitlab.com/arvindkalbhor/tennis-cricket-api.git"
+    "url": "https://github.com/ShubhamRavindraDesai/Natournaments"
   },
-  "homepage": "https://gitlab.com/arvindkalbhor/tennis-cricket-api.git",
+  "homepage": "https://github.com/ShubhamRavindraDesai/Natournaments",
   "devDependencies": {
     "eslint": "^8.6.0",
     "eslint-config-airbnb": "^19.0.4",
