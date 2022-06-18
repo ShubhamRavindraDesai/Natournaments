@@ -1,12 +1,12 @@
-const express = require("express");
-const matchController = require("./../controllers/matchController");
-const authController = require("./../controllers/authController");
+const express = require('express');
+const matchController = require('./../controllers/matchController');
+const authController = require('./../controllers/authController');
 
 const router = express.Router();
 
 router
-  .route("/")
-  .get(authController.protect, matchController.getAllMatches)
+  .route('/')
+  .get(matchController.getAllMatches)
   .post(
     authController.protect,
     matchController.uploadMatchImage,
@@ -14,12 +14,12 @@ router
   );
 
 router
-  .route("/:id")
+  .route('/:id')
   .get(matchController.getMatch)
   .patch(authController.protect, matchController.updateMatch)
   .delete(
     authController.protect,
-    authController.restrictTo("admin", "lead"),
+    authController.restrictTo('admin', 'lead'),
     matchController.deleteMatch
   );
 
