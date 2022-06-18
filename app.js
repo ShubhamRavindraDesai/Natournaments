@@ -21,8 +21,8 @@ const app = express();
 
 // 1) middlewares
 
-// app.set('view engine', "pug")
-// app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', "pug")
+app.set('views', path.join(__dirname, 'views'))
 
 
 // serving static files
@@ -69,9 +69,9 @@ app.use((req, res, next) => {
 
 // 3) Routes
 
-// app.get('/', (req, res) => {
-//   res.status(200).render('base')
-// })
+app.get('/', (req, res) => {
+  res.status(200).render('base')
+})
 
 app.use('/api/v1/matches', matchRouter);
 app.use('/api/v1/users', userRouter);
